@@ -13,7 +13,7 @@ endif
 BUNDLE_METADATA_OPTS ?= $(BUNDLE_CHANNELS) $(BUNDLE_DEFAULT_CHANNEL)
 
 # Image URL to use all building/pushing image targets
-IMG ?= quay.io/devfile/registry-operator:next
+IMG ?= image-registry.openshift-image-registry.svc:5000/openshift/registry-operator:next
 
 # Produce CRDs that work back to Kubernetes 1.11 (no version conversion)
 CRD_OPTIONS ?= "crd:trivialVersions=true"
@@ -105,11 +105,11 @@ generate: controller-gen
 
 # Build the docker image
 docker-build:
-	docker build . -t ${IMG}
+	docker build . -t $(HOST)/openshift/registry-operator:next
 
 # Push the docker image
 docker-push:
-	docker push ${IMG}
+	docker push $(HOST)/openshift/registry-operator:next --tls-verify=false
 
 # find or download controller-gen
 # download controller-gen if necessary

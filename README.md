@@ -36,7 +36,6 @@ metadata:
 spec:
   devfileIndexImage: quay.io/devfile/devfile-index:next
   telemetry:
-    enabled: true
     registryName: test
 EOF
 ```
@@ -61,10 +60,19 @@ spec:
   k8s:
     ingressDomain: $INGRESS_DOMAIN
   telemetry:
-    enabled: true
     registryName: test
 EOF
 ```
+
+## Telemetry
+If you want to send telemetry information to your own Segment instance, specify the write key in the telemetry object
+
+```bash
+  telemetry:
+    registryName: test
+    key: <your-segment-write-key>
+```
+
 
 ## Development
 
@@ -72,7 +80,7 @@ The repository contains a Makefile; building and deploying can be configured via
 
 |variable|purpose|default value|
 |---|---|---|
-| `IMG` | Image used for controller | `quay.io/devfile/registry-operator:next` |
+| `IMG` | Image used for controller (run makefile, if `IMG` is updated) | `quay.io/devfile/registry-operator:next` |
 
 Some of the rules supported by the makefile:
 
@@ -85,6 +93,7 @@ Some of the rules supported by the makefile:
 | uninstall | remove the devfile registry operator and CRDs from the cluster |
 | manifests | Generate manifests e.g. CRD, RBAC etc. |
 | generate | Generate the API type definitions. Must be run after modifying the DevfileRegistry type. |
+| bundle | Generate bundle manifests and metadata, then validate generated files. |
 | test_integration | Run the integration tests for the operator. |
 
 To see all rules supported by the makefile, run `make help`
